@@ -19,6 +19,7 @@ public class ControlsManager {
 		}
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+			body.applyForceToCenter(new Vector2((float) (-250*xforce), (float) (-250 * yforce)), true);
 			
 		}
 		

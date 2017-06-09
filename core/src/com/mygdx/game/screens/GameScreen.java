@@ -1,6 +1,10 @@
 package com.mygdx.game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -9,8 +13,11 @@ import com.mygdx.game.GameState;
 import com.mygdx.game.managers.ConditionsManager;
 import com.mygdx.game.managers.ControlsManager;
 import com.mygdx.game.utils.B2DBodyBuilder;
+import com.mygdx.game.utils.SpriteBuilder;
 
 import static com.mygdx.game.utils.B2DConstants.PPM;
+
+import java.io.Console;
 
 public class GameScreen extends AbstractScreen{
 
@@ -19,11 +26,17 @@ public class GameScreen extends AbstractScreen{
 	//Box2d Variables
 	World world;
 	Box2DDebugRenderer b2dr;
-	Body box, box1, box2, box3;
+	Body uavbody, wallbody;
 	
 	//Body Managers
 	ControlsManager cm;
 	ConditionsManager condm;
+	
+	//Textures for Render
+	SpriteBatch batch;
+	Texture uavtexture, walltexture;
+	Sprite uavsprite, wallsprite;
+
 	
 	
 	//Game Screen Constructor
@@ -46,20 +59,29 @@ public class GameScreen extends AbstractScreen{
 		
 		cm = new ControlsManager();
 		condm = new ConditionsManager();
-		
-		
-		//Setting the Physics bodies
-		box = B2DBodyBuilder.createBoxBody(world, camera.viewportWidth / 2, camera.viewportHeight / 2, 100f, 100f);
-		box1 = B2DBodyBuilder.createBoxBody(world, 200f, 100, 100f, 300f);
-		box2 = B2DBodyBuilder.createBoxBody(world, 400f, 100, 100f, 300f);
-		box3 = B2DBodyBuilder.createBoxBody(world, 300f, 300f, 300f, 100f);
-		
+				
 		
 		B2DBodyBuilder.createWalls(world, camera);
-				
+		
+		
 		//Setting projection Matrix
 		app.batch.setProjectionMatrix(camera.combined);
 		app.shapeBatch.setProjectionMatrix(camera.combined);
+		
+		//SpriteBatch Setup
+		batch = new SpriteBatch();
+		
+		//UAV
+		uavbody = B2DBodyBuilder.createBoxBody(world, camera.viewportWidth / 2, camera.viewportHeight / 2, 100f, 80f);
+		uavtexture = SpriteBuilder.createSpriteTexture("UAV.png");
+		uavsprite = SpriteBuilder.createSprite(world, uavbody, batch, uavtexture, 500, 500, 100, 80);
+		
+		//Wall
+		wallbody = B2DBodyBuilder.createBoxBody(world, 400f, 100, 100f, 500f);
+		walltexture = SpriteBuilder.createSpriteTexture("concrete.jpg");
+		wallsprite = SpriteBuilder.createSprite(world, wallbody, batch, walltexture, 500, 500, 100, 500);
+
+		
 		
 		//Desk Check
 		System.out.println("Width: " + camera.viewportWidth);
@@ -75,11 +97,28 @@ public class GameScreen extends AbstractScreen{
 	@Override
 	public void render(float delta){
 		super.render(delta);
-		b2dr.render(world, camera.combined.cpy().scl(PPM));
+//		b2dr.render(world, camera.combined.cpy().scl(PPM));
 		stage.draw();
-		cm.getKeyboardControls(box);
+		cm.getKeyboardControls(uavbody);
 //		condm.createCrossWind(box);
-		condm.createDrag(box);
+		condm.createDrag(uavbody);
+		
+		//Clear the screen
+//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		//Texture Fixtures
+		uavsprite = SpriteBuilder.fixSprite(uavbody, batch, uavsprite, uavbody.getPosition());
+		wallsprite = SpriteBuilder.fixSprite(wallbody, batch, wallsprite, wallbody.getPosition());
+		
+		
+		
+		//Batch rendering
+		batch.begin();
+		wallsprite.draw(batch);
+		uavsprite.draw(batch);
+		batch.end();
+		
+
 	}
 
 	@Override

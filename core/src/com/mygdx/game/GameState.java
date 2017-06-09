@@ -50,6 +50,7 @@ public class GameState extends Game {
 		// Setup managers
 		assets = new AssetManager();
 		gsm = new GameScreenManager(this);
+		
 
 		
 	}

@@ -12,17 +12,17 @@ public class ConditionsManager {
 		
 		y  = y + 0.01;
 		Random ran = new Random();
-		int x = (int) ( 300*Math.sin(y) - ran.nextInt(500) + ran.nextInt(500));
+		int x = (int) ( 150*Math.sin(y) - ran.nextInt(500) + ran.nextInt(500));
 		
 		body.applyForceToCenter(new Vector2(x, 0), true);
-		body.applyAngularImpulse((float) (0.0005*x), true);
+		body.applyAngularImpulse((float) (0.0001*x), true);
 		
 		return y;
 	}
 
 	public void createDrag (Body body) {
 		
-		float resistance = (float) (0.03*body.getLinearVelocity().len());
+		float resistance = (float) (0.02*body.getLinearVelocity().len());
 		
 		body.setLinearDamping(resistance);
 		System.out.println(resistance);
