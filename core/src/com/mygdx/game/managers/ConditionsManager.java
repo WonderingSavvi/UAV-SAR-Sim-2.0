@@ -25,6 +25,7 @@ public class ConditionsManager {
 		float resistance = (float) (0.02*body.getLinearVelocity().len());
 		
 		body.setLinearDamping(resistance);
-		System.out.println(resistance);
+		body.setAngularDamping(1.5f + 5*resistance);
+		
 	}
 }

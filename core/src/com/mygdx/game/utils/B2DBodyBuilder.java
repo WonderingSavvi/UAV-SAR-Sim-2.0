@@ -24,8 +24,8 @@ public final class B2DBodyBuilder {
 		bDef.type = BodyDef.BodyType.DynamicBody;
 		bDef.fixedRotation = false;
 		bDef.position.set(x / PPM, y / PPM);
-		bDef.angularDamping = 1.0f;
-		
+		bDef.angularDamping = 1.5f;
+							
 		//Body Creation
 		body = world.createBody(bDef);
 		
@@ -36,7 +36,7 @@ public final class B2DBodyBuilder {
 		//Fixture Definition
 		FixtureDef fDef = new FixtureDef();
 		fDef.shape = shape;
-		fDef.density = 1.0f;
+		fDef.density = (float) ((Math.pow(PPM, 2)*1)/1232);
 		fDef.friction = 0.8f;
 		fDef.restitution = 0.1f;
 		

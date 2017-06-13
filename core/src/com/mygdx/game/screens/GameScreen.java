@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -72,9 +73,9 @@ public class GameScreen extends AbstractScreen{
 		batch = new SpriteBatch();
 		
 		//UAV
-		uavbody = B2DBodyBuilder.createBoxBody(world, camera.viewportWidth / 2, camera.viewportHeight / 2, 100f, 80f);
+		uavbody = B2DBodyBuilder.createBoxBody(world, camera.viewportWidth / 2, camera.viewportHeight / 2, 100f, 64f);
 		uavtexture = SpriteBuilder.createSpriteTexture("UAV.png");
-		uavsprite = SpriteBuilder.createSprite(world, uavbody, batch, uavtexture, 500, 500, 100, 80);
+		uavsprite = SpriteBuilder.createSprite(world, uavbody, batch, uavtexture, 500, 500, 100, 64);
 		
 		//Wall
 		wallbody = B2DBodyBuilder.createBoxBody(world, 400f, 100, 100f, 500f);
@@ -86,18 +87,26 @@ public class GameScreen extends AbstractScreen{
 		//Desk Check
 		System.out.println("Width: " + camera.viewportWidth);
 		System.out.println("Height: " + camera.viewportHeight);
+		
 	}
 	
 	@Override
 	public void update(float delta) {
 		world.step(1/60f, 6, 2);
 		stage.act(delta);
+		this.camera.update();
 	}
 	
 	@Override
 	public void render(float delta){
+		
+		//Camera Tracking
+		camera.position.set(uavbody.getPosition().x*PPM, uavbody.getPosition().y*PPM, 0);
+		
+//		System.out.println(uavbody.getPosition().x*PPM - (GameState.V_WIDTH/2));
+		
 		super.render(delta);
-//		b2dr.render(world, camera.combined.cpy().scl(PPM));
+		b2dr.render(world, camera.combined.cpy().scl(PPM));
 		stage.draw();
 		cm.getKeyboardControls(uavbody);
 //		condm.createCrossWind(box);
@@ -107,8 +116,8 @@ public class GameScreen extends AbstractScreen{
 //		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		//Texture Fixtures
-		uavsprite = SpriteBuilder.fixSprite(uavbody, batch, uavsprite, uavbody.getPosition());
-		wallsprite = SpriteBuilder.fixSprite(wallbody, batch, wallsprite, wallbody.getPosition());
+		uavsprite = SpriteBuilder.fixSprite(uavbody, batch, uavsprite, uavbody.getPosition(), camera);
+		wallsprite = SpriteBuilder.fixSprite(wallbody, batch, wallsprite, wallbody.getPosition(), camera);
 		
 		
 		
