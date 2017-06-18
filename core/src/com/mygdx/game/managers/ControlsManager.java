@@ -5,11 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class ControlsManager {
 		
 	
-	public void getKeyboardControls (Body body) {
+	public void getKeyboardControls (Body body, World world) {
 		
 		double yforce = Math.cos(-body.getAngle());
 		double xforce = Math.sin(-body.getAngle());
@@ -32,6 +33,11 @@ public class ControlsManager {
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 			body.applyAngularImpulse(-0.5f, true);
 
+		}
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			AutopilotManager.startAutoLanding(true, body, world);
+			
 		}
 	}
 	

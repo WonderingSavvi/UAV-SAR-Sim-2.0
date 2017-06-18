@@ -2,7 +2,9 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -35,7 +37,7 @@ public class GameScreen extends AbstractScreen{
 	
 	//Textures for Render
 	SpriteBatch batch;
-	Texture uavtexture, walltexture;
+	Texture uavtexture, walltexture, bgtexture;
 	Sprite uavsprite, wallsprite;
 
 	
@@ -82,6 +84,11 @@ public class GameScreen extends AbstractScreen{
 		walltexture = SpriteBuilder.createSpriteTexture("concrete.jpg");
 		wallsprite = SpriteBuilder.createSprite(world, wallbody, batch, walltexture, 500, 500, 100, 500);
 
+		//Background
+		Pixmap px = new Pixmap(Gdx.files.internal("lab wall.jpg"));
+		bgtexture = new Texture(px);
+		bgtexture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
+		
 		
 		
 		//Desk Check
@@ -102,13 +109,11 @@ public class GameScreen extends AbstractScreen{
 		
 		//Camera Tracking
 		camera.position.set(uavbody.getPosition().x*PPM, uavbody.getPosition().y*PPM, 0);
-		
-//		System.out.println(uavbody.getPosition().x*PPM - (GameState.V_WIDTH/2));
-		
+				
 		super.render(delta);
 		b2dr.render(world, camera.combined.cpy().scl(PPM));
 		stage.draw();
-		cm.getKeyboardControls(uavbody);
+		cm.getKeyboardControls(uavbody, world);
 //		condm.createCrossWind(box);
 		condm.createDrag(uavbody);
 		

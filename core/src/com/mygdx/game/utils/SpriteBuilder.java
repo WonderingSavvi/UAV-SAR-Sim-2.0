@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.GameState;
 
 public class SpriteBuilder{
+	
+	public static int BACKGROUND_WIDTH = 150;
 
 	public static void createObject (World world, Sprite sprite, SpriteBatch batch, Texture texture, String img, int x, int y, int width, int height){
 		Body body;
@@ -42,6 +45,17 @@ public class SpriteBuilder{
 		
 		return sprite;
 
+	}
+	
+	public static Sprite createBackgroundTiles (int i, Texture texture, int width, int height) {
+		
+			Sprite sprite;
+			sprite = new Sprite(texture);
+			sprite.setBounds(i*texture.getWidth()-texture.getWidth(),0,texture.getWidth(), height);
+			sprite.setOriginCenter();
+			
+			return sprite;
+	
 	}
 	
 	public static Sprite fixSprite (Body body, SpriteBatch batch, Sprite sprite, Vector2 pos, OrthographicCamera camera) {

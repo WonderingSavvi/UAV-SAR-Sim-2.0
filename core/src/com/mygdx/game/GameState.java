@@ -21,7 +21,7 @@ public class GameState extends Game {
 	public static int APP_DESKTOP_HEIGHT = 1080;
 	public static int APP_FPS = 60;
 	public static boolean APP_RESIZEABLE = false;
-	public static boolean APP_FULLSCREEN = true;
+	public static boolean APP_FULLSCREEN = false;
 	
 	//Game Variables
 	public static int V_WIDTH = 1920;

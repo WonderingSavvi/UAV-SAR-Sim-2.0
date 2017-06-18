@@ -90,8 +90,8 @@ public final class B2DBodyBuilder {
 		ChainShape shape = new ChainShape();
 		Vector2[] verts = new Vector2[5];
 		verts[0] = new Vector2(1f / PPM, 0);
-		verts[1] = new Vector2(camera.viewportWidth / PPM, 0);
-		verts[2] = new Vector2(camera.viewportWidth / PPM, (camera.viewportHeight - 1f) / PPM);
+		verts[1] = new Vector2(150, 0);
+		verts[2] = new Vector2(150, (camera.viewportHeight - 1f) / PPM);
 		verts[3] = new Vector2(0, (camera.viewportHeight - 1f) / PPM);
 		verts[4] = new Vector2(1f / PPM,0);
 		shape.createChain(verts);
